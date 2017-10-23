@@ -1,0 +1,21 @@
+#img-edit-div{
+	height: 100%; 
+	width: 59%; 
+	left: 0%; 
+	top: 0%; 
+	float: left;
+	background: none; 
+	position: absolute; 
+	border-right: solid; 
+	border-width: 1px
+}
+
+#img-browser-div{
+	height: 100%; 
+	width: 40%; 
+	left: 60%; 
+	top: 0%; 
+	float: right; 
+	background: none; 
+	position: absolute;
+}

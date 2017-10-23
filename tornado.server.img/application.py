@@ -9,10 +9,16 @@ import os
 # import pymongo
 # from pymongo import MongoClient
 
+# setting = dict(
+#   # template_path=os.path.join(os.path.dirname(__file__),"template"),
+#   static_path=os.path.join(os.path.dirname(__file__), "static"), #.. 上级目录，.当前目录
+#   # template_path=os.path.join(os.path.dirname(__file__), "../client/app/templates")
+# )
+
 setting = dict(
   # template_path=os.path.join(os.path.dirname(__file__),"template"),
   static_path=os.path.join(os.path.dirname(__file__),"../"), #.. 上级目录，.当前目录
-  # template_path=os.path.join(os.path.dirname(__file__), "../client/app/templates")
+  template_path=os.path.join(os.path.dirname(__file__), "../imgbrowser/app/templates")
 )
 
 application = tornado.web.Application(

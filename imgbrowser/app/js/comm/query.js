@@ -1,6 +1,7 @@
-var lSendUrl = function(PostType, Url, formData, successPaperState){
-	if(PostType == 'GET'){
+var lSendUrl = function(PostType, Url, formData, successPaperState, self){
+	var xmlhttp;
 
+	if(PostType == 'GET'){
 		if (window.XMLHttpRequest){
 		// code for IE7+, Firefox, Chrome, Opera, Safari
 	        xmlhttp=new XMLHttpRequest();
@@ -8,7 +9,6 @@ var lSendUrl = function(PostType, Url, formData, successPaperState){
 	    // code for IE6, IE5
 	        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 	    }
-
 	    xmlhttp.onreadystatechange = function(){
 	        // self.successPaperState(self);
 	        successPaperState();
@@ -17,7 +17,6 @@ var lSendUrl = function(PostType, Url, formData, successPaperState){
 	    xmlhttp.send(null);
 
 	}else{
-
 		$.ajax({
 			url: Url,
 			type: "POST",
@@ -29,7 +28,7 @@ var lSendUrl = function(PostType, Url, formData, successPaperState){
 			success: function(response) {
 			  //set the thumbnail
 			// successPaperState();
-				successPaperState(response);
+				successPaperState(response, self);
 				// console.log(" connect to DB ", response);
 			},
 			error: function(jqXHR, textStatus, errorMessage) {

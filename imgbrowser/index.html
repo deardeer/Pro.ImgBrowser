@@ -1,10 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
+
+	<script id="img-template" type="text/html">
+	  <p><%= imgName %></p>
+	  <img href="<%- imgDir%>"></img>
+	</script>
+
   </head>
   <body>
     <div id="app-hook">   	
     </div>
-    <script src="static/js/bundle.js"></script>
+    <script src= "{{static_url('imgbrowser/static/js/bundle.js')}}"></script>
   </body>
 </html>
