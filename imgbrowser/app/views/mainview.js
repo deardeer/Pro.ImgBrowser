@@ -30,7 +30,8 @@ var MainView = Marionette.LayoutView.extend({  // 2
   	this.showChildView('img-edit-region', this.imgEditView);
   	// this.getRegion('img-edit-region').show(this.imgEditView);
   	this.getRegion('img-browser-region').show(this.imgBrowserView);
-  }
+
+  },  
 });
 
 module.exports = MainView;

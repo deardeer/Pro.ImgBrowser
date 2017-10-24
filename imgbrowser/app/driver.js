@@ -1,9 +1,20 @@
-
+var Marionette = require('backbone.marionette');
 var MainView = require('./views/mainview')
 
-var mainview = new MainView();  // 5
+var App = new Marionette.Application({
 
-mainview.render();  // 6
-mainview.triggerMethod('show');
+  onStart: function(){
+    //console.log(" options ", options);
 
-console.log('ssss')
+    var mainview = new MainView();  // 5
+
+	mainview.render();  // 6
+	mainview.triggerMethod('show');
+    //console.log('mystring','chenshuai') 
+  }  
+
+});
+
+
+App.start();
+console.log(" app ");

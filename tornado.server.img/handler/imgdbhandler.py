@@ -27,26 +27,8 @@ class IndexHandler(tornado.web.RequestHandler):
         self.render(("index.html")) #, paperNum= paperCollection.count(), papers=papers)
 	
 
-
 class LoadImgDBHandler(tornado.web.RequestHandler):
-    def post1(self):
-    	liImg = [];
-    	liImgRecord = imgDB.fetchRecords(int(self.get_argument('beginIndex')), int(self.get_argument('endIndex')));
-
-
-        # for record in liImgRecord:
-        #     imgName = record['imgName'];
-        #     crop = record['crop'];
-    	# for record in liImgRecord:
-     #        imgName = record['imgName']
-     #        imgDir = self.static_url('img/' + imgName);
-    	# 	liImg.append({'imgName': imgName,'imgDir': imgDir,'crop': crop})
-        
-     #    result = {
-     #    'imgList': liImg
-     #    }
-    	# self.set_header("Access-Control-Allow-Origin", '*');
-    	# self.write(result);
+    
     def post(self):
         liImg = [];
         liImgRecord = imgDB.fetchRecords(int(self.get_argument('beginIndex')), int(self.get_argument('endIndex')));
@@ -64,3 +46,26 @@ class LoadImgDBHandler(tornado.web.RequestHandler):
         }
         self.set_header('Access-Control-Allow-Origin', '*');
         self.write(result);
+
+
+class DeleteImgDBHandler(tornado.web.RequestHandler):
+    def post(self):
+        imgName = self.get_argument('imgName');
+        imgDB.deleteRecord('imgName', imgName);
+        self.write({'imgName': imgName});
+
+
+class CropImgDBHandler(tornado.web.RequestHandler):
+    def post(self):
+        imgName = self.get_argument('imgName');
+        imgCrop = self.get_argument('crop');
+        imgDB.setCrop('imgName', imgName, imgCrop);
+        self.write({'imgName': imgName});
+
+
+
+# class ShowCropHandler(tornado.web.RequestHandler):
+#     def get(self, para):
+#         print(' here ? ', para);
+#         self.write('ok');
+        # self.render()

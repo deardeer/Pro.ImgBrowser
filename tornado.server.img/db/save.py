@@ -17,6 +17,16 @@ class ImgDB:
 		liImgRecord = self._collection.find({'index': {'$gte': beginIndex, '$lt': endIndex}});
 		return liImgRecord;
 
+	def setCrop(self, key, value, crop):
+		print('set crop record ', key, value, crop);
+		self._collection.update_one({key: value}, {'$set': {'crop': crop}});
+
+
+	def deleteRecord(self, key, value):
+		print('delete record', key, value);
+		self._collection.remove({key: value});
+
+   
 #load raw imgs in dir to DB
 def saveRawImgstoDB(dir):
 	print('[saveRawImgstoDB] Begin ', dir);
@@ -42,4 +52,4 @@ def saveRawImgstoDB(dir):
 			beginIndex += 1
 	print('[saveRawImgstoDB] End');
 
-saveRawImgstoDB("../../img/*")
+# saveRawImgstoDB("../../img/*")

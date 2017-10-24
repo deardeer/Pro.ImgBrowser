@@ -23,7 +23,7 @@ var ImgView = Marionette.ItemView.extend({
       this.setElement(this.$el);
   },
   clickImg: function(img){
-    console.log(' click img ', img.target.getAttribute('src'));
+    console.log(' click img ', img.target.getAttribute('src'), img.target.getAttribute('imgName'));
     this.trigger('selectImg');
   }  
 });
@@ -42,7 +42,8 @@ var ImgBrowserView = Marionette.CompositeView.extend({  // 2
   },
   initialize: function(options){  	
   	// this.fetchImg(1);
-    this.eventBus = options.eventBus;//保存eventBus
+    this.eventBus = options.eventBus;//保存eventBus  
+    this.eventBus.on('cropImg', this.cropImg, this);
   },  
   successFetchFunc: function(response, self){
    var liImg = response['imgList'];
@@ -54,10 +55,12 @@ var ImgBrowserView = Marionette.CompositeView.extend({  // 2
      for (var i = 0; i < liImg.length; i ++) {
         var imgName = liImg[i]['imgName'];
         var imgDir = liImg[i]['imgDir'];
-        console.log(imgName, imgDir);
+        var imgCrop = liImg[i]['crop'];
+        console.log(imgName, imgDir, imgCrop);
         self.collection.add({
         'imgName': imgName,
         'imgDir': imgDir,
+        'imgCrop': imgCrop
        }) 
       };  
       // console.log('!!! ', );
@@ -75,8 +78,22 @@ var ImgBrowserView = Marionette.CompositeView.extend({  // 2
     fetchButton.target.setAttribute('fetchtimes', fetchTimes + 1);
   },
    onChildviewSelectImg: function(child){
-    console.log(" parent select img ", child.ui.img.attr('src'));
-    this.eventBus.trigger('chooseEditImg', child.ui.img.attr('src'));
+    console.log(" parent select img ", child.ui.img.attr('src'), child.ui.img.attr('imgName') );
+    var para = {
+      'imgDir': child.ui.img.attr('src'),
+      'imgName':  child.ui.img.attr('imgName'),
+    }
+    this.eventBus.trigger('chooseEditImg', para);
+   },
+   cropImg: function(imgName){
+    console.log(' crop img ', imgName);
+    this.children.each(function(view){
+      //console.log(" highlight ", view, view.model.get('key'), paperkey);
+      if(view.model.get('imgName') == imgName){
+        view.ui.img.removeClass("img-crop-false");
+        view.ui.img.addClass("img-crop-true");
+      }
+    });
    }
 });
 
