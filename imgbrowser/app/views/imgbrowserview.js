@@ -36,9 +36,11 @@ var ImgBrowserView = Marionette.CompositeView.extend({  // 2
   childView: ImgView, 
   ui: {
   	'fetchbutton': '#img-browser-fetch-btn',
+    'fetchproimg': '#fetch-processedimg-btn',
   },
   events: {
   	'click @ui.fetchbutton': 'fetchImg',
+    'click @ui.fetchproimg': 'fetchImg',
   },
   initialize: function(options){  	
   	// this.fetchImg(1);
@@ -47,6 +49,7 @@ var ImgBrowserView = Marionette.CompositeView.extend({  // 2
   },  
   successFetchFunc: function(response, self){
    var liImg = response['imgList'];
+   self.collection.reset();
 	 console.log(" success fetch img ", liImg); 
    if(liImg.length == 0){
     //no more img
@@ -56,32 +59,50 @@ var ImgBrowserView = Marionette.CompositeView.extend({  // 2
         var imgName = liImg[i]['imgName'];
         var imgDir = liImg[i]['imgDir'];
         var imgCrop = liImg[i]['crop'];
+        var imgPro = liImg[i]['imgPro'];
         console.log(imgName, imgDir, imgCrop);
         self.collection.add({
         'imgName': imgName,
         'imgDir': imgDir,
-        'imgCrop': imgCrop
+        'imgCrop': imgCrop,
+        'imgPro': imgPro,
        }) 
       };  
       // console.log('!!! ', );
    }
   },
-  //fetch the imgs
+  //fetch the origin imgs
   fetchImg: function(fetchButton){
     var self = this;
+    var imgType = fetchButton.target.getAttribute('fetchType');
     var fetchTimes = Number(fetchButton.target.getAttribute('fetchtimes'));
     var fetchNum = Number(fetchButton.target.getAttribute('fetcheverytime'));
   	var formData = new FormData();
+    var url = 'http://localhost:20111/';
+    switch(imgType){
+      case 'origin': 
+        url = url + 'fetchImgs'
+        break;
+      case 'processed':
+        url = url + 'fetchProImgs'
+        break;
+    }
   	formData.append('beginIndex', fetchTimes * fetchNum);
     formData.append('endIndex', (fetchTimes + 1) * fetchNum);
-  	lSendUrl('POST', 'http://localhost:20111/fetchImgs', formData, this.successFetchFunc, self);
+  	lSendUrl('POST', url, formData, this.successFetchFunc, self);
     fetchButton.target.setAttribute('fetchtimes', fetchTimes + 1);
   },
+  //fetch the processed images
+  // fetchImg: function(fetchButton){
+  //   var self = this;
+  //   var fetchTimes = Number(fetchButton)
+  // }
    onChildviewSelectImg: function(child){
-    console.log(" parent select img ", child.ui.img.attr('src'), child.ui.img.attr('imgName') );
+    console.log(" parent select img ", child.ui.img.attr('src'), child.ui.img.attr('imgName'), child.ui.img.attr('imgPro'));
     var para = {
       'imgDir': child.ui.img.attr('src'),
       'imgName':  child.ui.img.attr('imgName'),
+      'imgPro': child.ui.img.attr('imgPro'),
     }
     this.eventBus.trigger('chooseEditImg', para);
    },

@@ -9,6 +9,10 @@ module.exports = {
         loader: "json-loader" 
       },
       {
+          test: /\.js$/,
+          loader: 'ify-loader'
+      },
+      {
         test: /\.html$/,
         loader: 'underscore-template-loader'
       },

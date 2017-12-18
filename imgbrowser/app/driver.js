@@ -10,7 +10,7 @@ var App = new Marionette.Application({
 
 	mainview.render();  // 6
 	mainview.triggerMethod('show');
-    //console.log('mystring','chenshuai') 
+    // console.log('mystring','chenshuai') 
   }  
 
 });
