@@ -153,6 +153,9 @@ function histogram(){
 		    		var rgb = JSON.parse(disConfig.getBinValue(i));
 		    		return 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
 		    	}
+		    })
+		    .on('click', function(d, i){
+		    	console.log('click ', disConfig.getBinValue(i));
 		    });
 
 		var formatCount = d3.format(",.0f");
@@ -171,11 +174,8 @@ function histogram(){
 		}	    
 	}
 
-	Info.drawColorHistogram = function(gId, liValue){
-
-	}
 	//draw the histogram
-	Info.drawHistogram = function(gId, liValue, title){
+	Info.drawHistogram = function(gId, liValue, title, selectFunc){
 
 		var histogramG = d3.select('#' + gId);
 
@@ -226,7 +226,12 @@ function histogram(){
 		    .attr("x", 1)
 		    .attr("width", x(bins[0].x1) - x(bins[0].x0) - 1)
 		    .attr("height", function(d) { return height - y(d.length); })
-		    .style('fill', 'black');
+		    .style('fill', 'black')
+		    .on('click', function(d){
+		    	var liValue = d.slice(0, d.length);
+		    	console.log('click bar ', liValue);
+		    	selectFunc(liValue);
+		    });
 
 		var formatCount = d3.format(",.0f");
 
