@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+	<script id="img-template" type="text/html">
+    <div style="display: inline-block; padding: 3px;">
+  	  <img class="thumbnail <%- 'img-crop-' + imgCrop %>" imgName="<%= imgName%>" src="<%- imgDir%>" imgPro="<%= imgPro%>" style="width:80px; height:80px"></img>
+    </div>
+	</script>
+
+  <script type="text/javascript">
+    console.log(" xxx ");
+  </script>
+
+  </head>
+  <body>
+    <div id="app-hook">   	
+    </div>
+    <script src= "{{static_url('imgbrowser/static/js/bundle.js')}}"></script>
+  </body>
+  </body>
+</html>

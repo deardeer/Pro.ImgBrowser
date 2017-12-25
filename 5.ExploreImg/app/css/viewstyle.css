@@ -1,0 +1,32 @@
+#img-search-div{
+	height: 350px;
+	width: 100%;
+	left: 0%;
+	top: 0%;
+	float: top;
+	background: #FF9800;
+	border: yellow;
+	border-bottom-style: solid;
+	border-bottom-color: rgb(39,39,39);
+	border-bottom-width: 3px
+}
+
+#img-show-div{
+	height: 800px;
+	width: 100%;
+	left: 0%;
+	top: 100px;
+	float: top;
+	background: white;
+}
+
+.thumb-img{
+    z-index: 0;
+    width:70px;
+    height:70px;
+    border-radius: 5px;
+        
+    padding: 3px;
+    border-color: gray;
+    box-shadow: 2px 2px 2px #000000;
+}

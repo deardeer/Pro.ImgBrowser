@@ -14,6 +14,11 @@ class ImgDB:
 	def connectDB(self, dbname, dbip, port):
 		self._conn = MongoClient(dbip, port)
 		self._db = self._conn[dbname]
+
+	def fetchAllRecords(self, collectionname):
+		self._collection = self._db[collectionname];
+		return self._collection.find();
+
 	def fetchRecords(self, collectionname, beginIndex, endIndex):
 		self._collection = self._db[collectionname];
 		liImgRecord = self._collection.find({'index': {'$gte': beginIndex, '$lt': endIndex}});

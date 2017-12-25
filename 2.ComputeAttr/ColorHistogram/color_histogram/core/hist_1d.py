@@ -11,7 +11,7 @@ import math
 
 from color_histogram.core.color_pixels import ColorPixels
 from color_histogram.core.hist_common import colorCoordinates, colorDensities, rgbColors, clipLowDensity, range2ticks
-
+import colorsys
 
 ## Implementation of 1D color histograms.
 class Hist1D:
@@ -106,6 +106,17 @@ class Hist1D:
 
         self._clipLowDensity()
 
+    def getTopColorDensity(self):
+        color_densities = self.colorDensities()
+        rgbcolors = self.rgbColors()
+        rgbhsvcolors = []
+        for r,g,b in rgbcolors:
+            h,s,v = colorsys.rgb_to_hsv(r*255,g*255,b*255)
+            rgbhsvcolors.append([int(r*255),int(g*255),int(b*255),h,s,v])
+        print('rgbhsv ', rgbhsvcolors);
+        return np.array(rgbhsvcolors).tolist(), color_densities.tolist();
+
+
     def _clipLowDensity(self):
         clipLowDensity(self._hist_bins, self._color_bins, self._alpha)
 
@@ -141,7 +152,7 @@ class Hist1DPlot:
         color_range = self._hist1D.colorRange()
         width = (color_range[1] - color_range[0]) / float(self._hist1D.numBins())
 
-        print('new_log_colordens ', new_log_colordens, 'colors ', colors);
+        # print('new_log_colordens ', new_log_colordens, 'colors ', colors);
         ax.bar(color_samples, new_log_colordens, width=width, color=colors) #edgecolor='black'
         self._axisSetting(ax)
 

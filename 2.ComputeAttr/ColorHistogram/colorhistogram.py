@@ -1,31 +1,60 @@
-from color_histogram.maskbg import maskImgBG
-from color_histogram.maskbg import getMask
-from color_histogram.io_util.image import loadRGB
-from color_histogram.io_util.image import loadRGB_lm
-from color_histogram.core.hist_1d import Hist1D
+
 import matplotlib.pyplot as plt
 
+import argparse
 import cv2
 import numpy as np
+import os
+import glob
+from os.path import basename
 
-# maks bg
-# img_maskbg = maskImgBG('../../cropimg/10.png')
-imgdir = '../../img/Abastract timeline infographic template.jpg'
-image_mask = maskImgBG(imgdir)
-# cv2.imshow('mask', image_mask)
-# cv2.waitKey(0)
+import pymongo
+from pymongo import MongoClient
 
-image = loadRGB_lm(image_mask);
-# print('image type ', type(image), image.shape);
+from hogcompute import HOGCom 
+from colorcompute import ColorCom
 
-# 16 bins, Lab color space, target channel L ('Lab'[0])
-hist1D = Hist1D(image, num_bins=300, alpha=0, color_space='hsv', channel=0)
-hist1D_L = Hist1D(image, num_bins=300, alpha=0, color_space='Lab', channel=0)
+ap = argparse.ArgumentParser()
+ap.add_argument("-i", 
+	help="path to the input image");
+ap.add_argument("-d", 
+	help="path to the input file");
+args = vars(ap.parse_args())
+imgdir = args['i']
+imgFileDir = args['d'];
 
-fig1 = plt.figure()
-ax = fig1.add_subplot(111)
-hist1D.plot(ax)
-fig2 = plt.figure()
-ax_L = fig2.add_subplot(111)
-hist1D_L.plot(ax_L)
-plt.show()
+#connect MongoDB
+_dbIp = 'localhost'
+_conn = MongoClient(_dbIp, 27017)
+_db = _conn['ImageDB']
+_collection = _db['proimg']
+
+_colorCom = ColorCom();
+_hogCom = HOGCom();
+
+if imgdir != None:
+	_colorCom.compute_saveDB(imgdir, _collection);
+	_hogCom.compute_saveDB(imgdir, _collection);
+
+	# saveColorHis(imgdir)
+
+if imgFileDir != None:
+	fileList = glob.glob(imgFileDir + '/*.png');
+	for imgdir in fileList:			
+		# filebasename = basename(filename)
+		print('file name ', imgdir);
+		_colorCom.compute_saveDB(imgdir, _collection);
+		_hogCom.compute_saveDB(imgdir, _collection);
+		# saveColorHis(filename)		
+		# print(filebasename);
+
+
+# print('top ', list(z))  
+
+# fig1 = plt.figure()
+# ax = fig1.add_subplot(111)
+# hist1D.plot(ax)
+# fig2 = plt.figure()
+# ax_L = fig2.add_subplot(111)
+# hist1D_L.plot(ax_L)
+# plt.show()

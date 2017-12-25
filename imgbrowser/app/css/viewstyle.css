@@ -26,3 +26,14 @@
 .img-crop-false{
 	border: none;
 }
+
+.thumb-img{
+    z-index: 0;
+    width:70px;
+    height:70px;
+    border-radius: 5px;
+        
+    padding: 3px;
+    border-color: gray;
+    box-shadow: 2px 2px 2px #000000;
+}
